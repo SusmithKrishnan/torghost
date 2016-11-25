@@ -62,7 +62,7 @@ def ip():
 	while True:
 		try:
 			ipadd = load(urlopen('http://jsonip.com/'))['ip']
-		except urllib2.URLError:
+		except :
 			continue
 		break
 	return ipadd
