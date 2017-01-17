@@ -92,7 +92,7 @@ def start_torghost():
 		with open(Torrc, "a") as myfile:
 			print t()+" Configuring torrc file.. ",
 			myfile.write(TorrcCfgString)
-			print bcolors.GREEN+"[done]"+bcolors.ENDc
+			print bcolors.GREEN+"[done]"+bcolors.ENDC
 	if resolvString in open(resolv).read():
 	    print t()+" DNS resolv.conf file already configured"
 	else:
