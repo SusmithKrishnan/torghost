@@ -61,7 +61,7 @@ def usage():
 def ip():
 	while True:
 		try:
-			ipadd = load(urlopen('http://jsonip.com/'))['ip']
+			ipadd = load(urlopen('https://api.ipify.org?format=json'))['ip']
 		except :
 			continue
 		break
