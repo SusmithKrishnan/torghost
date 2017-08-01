@@ -61,7 +61,7 @@ def usage():
 def ip():
 	while True:
 		try:
-			ipadd = load(urlopen('https://api.ipify.org?format=json'))['ip']
+			ipadd = os.popen("wget http://ipecho.net/plain -O - -q ; echo").read()
 		except :
 			continue
 		break
