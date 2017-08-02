@@ -12,12 +12,13 @@ clone to the repo or download the files, open the directory and follow the comma
        | |/ _ \| '__| |  _| '_ \ / _ \/ __| __|
        | | (_) | |  | |_| | | | | (_) \__ \ |_
        |_|\___/|_|   \____|_| |_|\___/|___/\__|
-	v1.0 - SusmithHCK | www.khromozome.com 
+	v2.0 - SusmithHCK | www.khromozome.com 
 
 
 	USAGE:
         torghost start -----(start torghost)
-        torghost stop  -----(stop torghost)    
+        torghost stop  -----(stop torghost) 
+	torghost switch ----(switch IP)
 
     
 -----------------------------------------------------------------------------------------
