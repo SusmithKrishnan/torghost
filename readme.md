@@ -18,6 +18,7 @@ clone to the repo or download the files, open the directory and follow the comma
        | | (_) | |  | |_| | | | | (_) \__ \ |_
        |_|\___/|_|   \____|_| |_|\___/|___/\__|
 	v2.0 - SusmithHCK | www.khromozome.com 
+        Hacker's QandA forum: https://www.askthehackers.com
 
 
 	USAGE:
