@@ -6,7 +6,12 @@ sudo apt-get install tor -y -qq
 echo "=====> Installing dependencies "
 sudo pip install stem
 echo "=====> Installing TorGhost "
-sudo cp torghost /usr/bin/torghost
+if [ $1 = "--python3" ]
+then
+	sudo cp torghost3 /usr/bin/torghost
+else
+	sudo cp torghost /usr/bin/torghost
+fi
 sudo chmod +x /usr/bin/torghost
 echo "=====> Done "
 echo "=====> Open terminal and type 'torghost' for usage "
