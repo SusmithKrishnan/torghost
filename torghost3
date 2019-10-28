@@ -179,10 +179,10 @@ arg = sys.argv[1:]
 if len(arg)!=1:
 	usage()
 elif sys.argv[1] == "start":
-	# logo()
+	logo()
 	start_torghost()
 elif sys.argv[1] == "stop":
-	# logo()
+	logo()
 	stop_torghost()
 elif sys.argv[1] == "switch":
 	switch_tor()
