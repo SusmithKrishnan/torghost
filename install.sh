@@ -19,4 +19,3 @@ sudo systemctl enable tor
 sudo systemctl start tor
 echo "=====> Done "
 echo "=====> Open terminal and type 'torghost' for usage "
-echo "Any questions on cyber security? Join Hacker's QandA forum: https://www.askthehackers.com "
