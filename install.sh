@@ -5,6 +5,7 @@ echo "=====> Installing tor bundle "
 sudo apt-get install tor -y -qq
 echo "=====> Installing dependencies "
 sudo pip install stem
+sudo pip3 install stem
 echo "=====> Installing TorGhost "
 if [ $1 = "--python3" ]
 then
