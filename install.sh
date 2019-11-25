@@ -3,14 +3,13 @@ echo "******* Torghost installer ********"
 echo ""
 echo "=====> Installing tor bundle "
 sudo apt-get install tor -y -qq
-echo "=====> Installing dependencies "
-sudo pip install stem
-sudo pip3 install stem
-echo "=====> Installing TorGhost "
+echo "=====> Installing TorGhost & dependencies "
 if [ $1 = "--python3" ]
 then
+	sudo pip3 install stem
 	sudo cp torghost3 /usr/bin/torghost
 else
+	sudo pip install stem
 	sudo cp torghost /usr/bin/torghost
 fi
 sudo chmod +x /usr/bin/torghost
