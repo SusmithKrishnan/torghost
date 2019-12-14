@@ -4,7 +4,11 @@ echo ""
 echo "=====> Installing tor bundle "
 sudo apt-get install tor -y -qq
 echo "=====> Installing TorGhost & dependencies "
-if [ $1 = "--python3" ]
+
+pyv="$(python -V 2>&1)" || pyv="$(python3 -V 2>&1)" 
+pyv=${pyv:7:1}
+
+if [[ $pyv == "3" ]]
 then
 	sudo pip3 install stem
 	sudo cp torghost3 /usr/bin/torghost
