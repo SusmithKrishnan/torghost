@@ -2,12 +2,15 @@
 
 import os
 import sys
+import getopt
+from requests import get
 import commands
-from commands import getoutput
 import time
 import signal
 from stem import Signal
 from stem.control import Controller
+
+VERSION = 3.0
 
 
 class bcolors:
@@ -40,7 +43,6 @@ def sigint_handler(signum, frame):
 
 
 def logo():
-    os.system("clear")
     print bcolors.RED + bcolors.BOLD
     print """
       _____           ____ _               _
@@ -48,7 +50,7 @@ def logo():
        | |/ _ \| '__| |  _| '_ \ / _ \/ __| __|
        | | (_) | |  | |_| | | | | (_) \__ \ |_
        |_|\___/|_|   \____|_| |_|\___/|___/\__|
-	v2.0 - SusmithKrishnan
+	v3.0 - github.com/SusmithKrishnan
 
     """
     print bcolors.ENDC
@@ -57,11 +59,11 @@ def logo():
 def usage():
     logo()
     print """
-
-	USAGE:
-        torghost start -----(start torghost)
-        torghost stop  -----(stop torghost)
-	torghost switch ----(switch IP)
+    Torghost v3.0 usage:
+    -s    --start       Start Torghost
+    -r    --switch      Request new tor exit node
+    -x    --stop        Stop Torghost
+    -h    --help        Print this help and exit
 
     """
     sys.exit()
@@ -70,12 +72,11 @@ def usage():
 def ip():
     while True:
         try:
-            ipadd = commands.getstatusoutput(
-                'wget -qO- https://check.torproject.org | grep -Po "(?<=strong>)[\d\.]+(?=</strong)"')
+            ipadd = get('https://api.ipify.org').text
         except:
             continue
         break
-    return ipadd[1]
+    return ipadd
 
 
 signal.signal(signal.SIGINT, sigint_handler)
@@ -115,6 +116,8 @@ def start_torghost():
 
     print t()+" Stopping tor service ",
     os.system("sudo systemctl stop tor")
+    os.system("sudo fuser -k 9051/tcp > /dev/null 2>&1")
+    print bcolors.GREEN+"[done]"+bcolors.ENDC
     print t()+" Starting new tor daemon ",
     os.system("sudo -u debian-tor tor -f /etc/tor/torghostrc > /dev/null")
     print bcolors.GREEN+"[done]"+bcolors.ENDC
@@ -141,7 +144,7 @@ def start_torghost():
 	done
 	iptables -A OUTPUT -m owner --uid-owner $TOR_UID -j ACCEPT
 	iptables -A OUTPUT -j REJECT
-	""" % (getoutput("id -ur debian-tor"))
+	""" % (commands.getoutput("id -ur debian-tor"))
 
     os.system(iptables_rules)
     print bcolors.GREEN+"[done]"+bcolors.ENDC
@@ -162,7 +165,7 @@ def stop_torghost():
 	iptables -X
 	"""
     os.system(IpFlush)
-    os.system("sudo fuser -k 9051/tcp &> /dev/null")
+    os.system("sudo fuser -k 9051/tcp > /dev/null 2>&1")
     print bcolors.GREEN+"[done]"+bcolors.ENDC
     print t()+" Restarting Network manager",
     os.system("service network-manager restart")
@@ -184,18 +187,25 @@ def switch_tor():
     print t()+" CURRENT IP : "+bcolors.GREEN+ip()+bcolors.ENDC
 
 
-arg = sys.argv[1:]
+def main():
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "srxh", [
+                                   "start", "stop", "switch", "help"])
+    except getopt.GetoptError as err:
+        usage()
+        sys.exit(2)
+    for o, a in opts:
+        if o in ("-h", "--help"):
+            usage()
+        elif o in ("-s", "--start"):
+            start_torghost()
+        elif o in ("-x", "--stop"):
+            stop_torghost()
+        elif o in ("-r", "--switch"):
+            switch_tor()
+        else:
+            usage()
 
 
-if len(arg) != 1:
-    usage()
-elif sys.argv[1] == "start":
-    logo()
-    start_torghost()
-elif sys.argv[1] == "stop":
-    logo()
-    stop_torghost()
-elif sys.argv[1] == "switch":
-    switch_tor()
-else:
-    usage()
+if __name__ == "__main__":
+    main()
