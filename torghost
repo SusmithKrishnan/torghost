@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import os
 import sys
@@ -14,6 +15,7 @@ VERSION = 3.0
 
 
 class bcolors:
+
     BLUE = '\033[94m'
     GREEN = '\033[92m'
     RED = '\033[31m'
@@ -28,12 +30,15 @@ class bcolors:
 def t():
     current_time = time.localtime()
     ctime = time.strftime('%H:%M:%S', current_time)
-    return "[" + ctime + "]"
+    return '[' + ctime + ']'
 
 
 def shutdown():
-    print ""
-    print bcolors.BGRED + bcolors.WHITE + t() + "[info] shutting down torghost" + bcolors.ENDC + "\n\n"
+    print ''
+    print bcolors.BGRED + bcolors.WHITE + t() \
+        + '[info] shutting down torghost' + bcolors.ENDC + '''
+
+'''
     sys.exit()
 
 
@@ -50,7 +55,7 @@ def logo():
        | |/ _ \| '__| |  _| '_ \ / _ \/ __| __|
        | | (_) | |  | |_| | | | | (_) \__ \ |_
        |_|\___/|_|   \____|_| |_|\___/|___/\__|
-	v3.0 - github.com/SusmithKrishnan
+	v3.0 - github.com/SusmithKrishnan/torghost
 
     """
     print bcolors.ENDC
@@ -81,7 +86,8 @@ def ip():
 
 signal.signal(signal.SIGINT, sigint_handler)
 
-TorrcCfgString = """
+TorrcCfgString = \
+    """
 VirtualAddrNetwork 10.0.0.0/10
 AutomapHostsOnResolve 1
 TransPort 9040
@@ -90,40 +96,42 @@ ControlPort 9051
 RunAsDaemon 1
 """
 
-resolvString = "nameserver 127.0.0.1"
+resolvString = 'nameserver 127.0.0.1'
 
-Torrc = "/etc/tor/torghostrc"
-resolv = "/etc/resolv.conf"
+Torrc = '/etc/tor/torghostrc'
+resolv = '/etc/resolv.conf'
 
 
 def start_torghost():
 
     if os.path.exists(Torrc) and TorrcCfgString in open(Torrc).read():
-        print t()+" Torrc file already configured"
+        print t() + ' Torrc file already configured'
     else:
 
-        with open(Torrc, "a") as myfile:
+        with open(Torrc, 'a') as myfile:
 
             myfile.write(TorrcCfgString)
-            print bcolors.GREEN+"[done]"+bcolors.ENDC
+            print bcolors.GREEN + '[done]' + bcolors.ENDC
     if resolvString in open(resolv).read():
-        print t()+" DNS resolv.conf file already configured"
+        print t() + ' DNS resolv.conf file already configured'
     else:
-        with open(resolv, "w") as myfile:
-            print t()+" Configuring DNS resolv.conf file.. ",
+        with open(resolv, 'w') as myfile:
+            print t() + ' Configuring DNS resolv.conf file.. ',
             myfile.write(resolvString)
-            print bcolors.GREEN+"[done]"+bcolors.ENDC
+            print bcolors.GREEN + '[done]' + bcolors.ENDC
 
-    print t()+" Stopping tor service ",
-    os.system("sudo systemctl stop tor")
-    os.system("sudo fuser -k 9051/tcp > /dev/null 2>&1")
-    print bcolors.GREEN+"[done]"+bcolors.ENDC
-    print t()+" Starting new tor daemon ",
-    os.system("sudo -u debian-tor tor -f /etc/tor/torghostrc > /dev/null")
-    print bcolors.GREEN+"[done]"+bcolors.ENDC
-    print t()+" setting up iptables rules",
+    print t() + ' Stopping tor service ',
+    os.system('sudo systemctl stop tor')
+    os.system('sudo fuser -k 9051/tcp > /dev/null 2>&1')
+    print bcolors.GREEN + '[done]' + bcolors.ENDC
+    print t() + ' Starting new tor daemon ',
+    os.system('sudo -u debian-tor tor -f /etc/tor/torghostrc > /dev/null'
+              )
+    print bcolors.GREEN + '[done]' + bcolors.ENDC
+    print t() + ' setting up iptables rules',
 
-    iptables_rules = """
+    iptables_rules = \
+        """
 	NON_TOR="192.168.1.0/24 192.168.0.0/24"
 	TOR_UID=%s
 	TRANS_PORT="9040"
@@ -144,18 +152,20 @@ def start_torghost():
 	done
 	iptables -A OUTPUT -m owner --uid-owner $TOR_UID -j ACCEPT
 	iptables -A OUTPUT -j REJECT
-	""" % (commands.getoutput("id -ur debian-tor"))
+	""" \
+        % commands.getoutput('id -ur debian-tor')
 
     os.system(iptables_rules)
-    print bcolors.GREEN+"[done]"+bcolors.ENDC
-    print t()+" Fetching current IP..."
-    print t()+" CURRENT IP : "+bcolors.GREEN+ip()+bcolors.ENDC
+    print bcolors.GREEN + '[done]' + bcolors.ENDC
+    print t() + ' Fetching current IP...'
+    print t() + ' CURRENT IP : ' + bcolors.GREEN + ip() + bcolors.ENDC
 
 
 def stop_torghost():
-    print bcolors.RED+t()+"STOPPING torghost"+bcolors.ENDC
-    print t()+" Flushing iptables, resetting to default",
-    IpFlush = """
+    print bcolors.RED + t() + 'STOPPING torghost' + bcolors.ENDC
+    print t() + ' Flushing iptables, resetting to default',
+    IpFlush = \
+        """
 	iptables -P INPUT ACCEPT
 	iptables -P FORWARD ACCEPT
 	iptables -P OUTPUT ACCEPT
@@ -165,47 +175,48 @@ def stop_torghost():
 	iptables -X
 	"""
     os.system(IpFlush)
-    os.system("sudo fuser -k 9051/tcp > /dev/null 2>&1")
-    print bcolors.GREEN+"[done]"+bcolors.ENDC
-    print t()+" Restarting Network manager",
-    os.system("service network-manager restart")
-    print bcolors.GREEN+"[done]"+bcolors.ENDC
-    print t()+" Fetching current IP..."
+    os.system('sudo fuser -k 9051/tcp > /dev/null 2>&1')
+    print bcolors.GREEN + '[done]' + bcolors.ENDC
+    print t() + ' Restarting Network manager',
+    os.system('service network-manager restart')
+    print bcolors.GREEN + '[done]' + bcolors.ENDC
+    print t() + ' Fetching current IP...'
     time.sleep(3)
-    print t()+" CURRENT IP : "+bcolors.GREEN+ip()+bcolors.ENDC
+    print t() + ' CURRENT IP : ' + bcolors.GREEN + ip() + bcolors.ENDC
 
 
 def switch_tor():
-    print t()+" Please wait..."
+    print t() + ' Please wait...'
     time.sleep(7)
-    print t()+" Requesting new circuit...",
+    print t() + ' Requesting new circuit...',
     with Controller.from_port(port=9051) as controller:
         controller.authenticate()
         controller.signal(Signal.NEWNYM)
-    print bcolors.GREEN+"[done]"+bcolors.ENDC
-    print t()+" Fetching current IP..."
-    print t()+" CURRENT IP : "+bcolors.GREEN+ip()+bcolors.ENDC
+    print bcolors.GREEN + '[done]' + bcolors.ENDC
+    print t() + ' Fetching current IP...'
+    print t() + ' CURRENT IP : ' + bcolors.GREEN + ip() + bcolors.ENDC
 
 
 def main():
+    if len(sys.argv) <= 1 :
+        usage()
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "srxh", [
-                                   "start", "stop", "switch", "help"])
-    except getopt.GetoptError as err:
+        (opts, args) = getopt.getopt(sys.argv[1:], 'srxh', ['start', 'stop', 'switch', 'help'])
+    except getopt.GetoptError, err:
         usage()
         sys.exit(2)
-    for o, a in opts:
-        if o in ("-h", "--help"):
+    for (o, a) in opts:
+        if o in ('-h', '--help'):
             usage()
-        elif o in ("-s", "--start"):
+        elif o in ('-s', '--start'):
             start_torghost()
-        elif o in ("-x", "--stop"):
+        elif o in ('-x', '--stop'):
             stop_torghost()
-        elif o in ("-r", "--switch"):
+        elif o in ('-r', '--switch'):
             switch_tor()
         else:
             usage()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
