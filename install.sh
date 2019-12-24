@@ -1,7 +1,6 @@
-echo "Torghost installer v3.0"
-echo "Installing prerequisites "
-sudo apt-get install tor python-pip -y 
-echo "Installing dependencies "
-pip install -r requirements.txt 
-pyinstaller torghost.py
-echo "=====> Done "
+echo "Torghost binary installer v3.0"
+echo "[Waning] use build.sh for compiling from source"
+echo "Downloading.."
+wget -c https://github.com/SusmithKrishnan/torghost/releases/download/v3.0/torghost_3.0_amd64.deb
+sudo dpkg -i torghost_3.0_amd64.deb
+echo "done"
