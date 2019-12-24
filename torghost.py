@@ -11,7 +11,8 @@ import signal
 from stem import Signal
 from stem.control import Controller
 
-VERSION = 3.0
+VERSION = "3.0"
+API_DOMAIN = "https://fathomless-tor-66488.herokuapp.com"
 
 
 class bcolors:
@@ -103,13 +104,13 @@ resolv = '/etc/resolv.conf'
 
 
 def start_torghost():
-
+    check_update()
     if os.path.exists(Torrc) and TorrcCfgString in open(Torrc).read():
         print t() + ' Torrc file already configured'
     else:
 
-        with open(Torrc, 'a') as myfile:
-
+        with open(Torrc, 'w') as myfile:
+            print t() + ' Writing torcc file '
             myfile.write(TorrcCfgString)
             print bcolors.GREEN + '[done]' + bcolors.ENDC
     if resolvString in open(resolv).read():
@@ -196,9 +197,18 @@ def switch_tor():
     print t() + ' Fetching current IP...'
     print t() + ' CURRENT IP : ' + bcolors.GREEN + ip() + bcolors.ENDC
 
+def check_update():
+    print t() + ' Checking for update...'
+    newversion= get(API_DOMAIN+'/latestversion').json()    
+    if newversion['version'] != VERSION:
+        print t() +  bcolors.GREEN + ' New update available please check https://github.com/SusmithKrishnan/torghost' + bcolors.ENDC
+    else:
+        print t() + ' Torghost is up to date...'    
+
 
 def main():
     if len(sys.argv) <= 1 :
+        check_update()
         usage()
     try:
         (opts, args) = getopt.getopt(sys.argv[1:], 'srxh', ['start', 'stop', 'switch', 'help'])
