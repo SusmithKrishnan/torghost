@@ -11,7 +11,7 @@ import signal
 from stem import Signal
 from stem.control import Controller
 
-VERSION = "3.0.1"
+VERSION = "3.0.2"
 API_DOMAIN = "https://fathomless-tor-66488.herokuapp.com"
 
 
@@ -47,7 +47,7 @@ def logo():
        | |/ _ \| '__| |  _| '_ \ / _ \/ __| __|
        | | (_) | |  | |_| | | | | (_) \__ \ |_
        |_|\___/|_|   \____|_| |_|\___/|___/\__|
-	v3.0.1 - github.com/SusmithKrishnan/torghost
+	v3.0.2 - github.com/SusmithKrishnan/torghost
 
     """
     print bcolors.ENDC
@@ -56,11 +56,12 @@ def logo():
 def usage():
     logo()
     print """
-    Torghost v3.0.1 usage:
+    Torghost usage:
     -s    --start       Start Torghost
     -r    --switch      Request new tor exit node
     -x    --stop        Stop Torghost
     -h    --help        Print this help and exit
+    -u    --update      check for update
 
     """
     sys.exit()
@@ -95,7 +96,7 @@ resolv = '/etc/resolv.conf'
 
 
 def start_torghost():
-    check_update()
+    print t() + ' Always check for updates using -u option',
     if os.path.exists(Torrc) and TorrcCfgString in open(Torrc).read():
         print t() + ' Torrc file already configured'
     else:
@@ -202,7 +203,7 @@ def main():
         check_update()
         usage()
     try:
-        (opts, args) = getopt.getopt(sys.argv[1:], 'srxh', ['start', 'stop', 'switch', 'help'])
+        (opts, args) = getopt.getopt(sys.argv[1:], 'srxhu', ['start', 'stop', 'switch', 'help', 'update'])
     except getopt.GetoptError, err:
         usage()
         sys.exit(2)
@@ -215,6 +216,8 @@ def main():
             stop_torghost()
         elif o in ('-r', '--switch'):
             switch_tor()
+        elif o in ('-u', '--update'):
+            check_update()   
         else:
             usage()
 
