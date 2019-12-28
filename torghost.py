@@ -11,7 +11,7 @@ import signal
 from stem import Signal
 from stem.control import Controller
 
-VERSION = "3.0"
+VERSION = "3.0.1"
 API_DOMAIN = "https://fathomless-tor-66488.herokuapp.com"
 
 
@@ -34,18 +34,9 @@ def t():
     return '[' + ctime + ']'
 
 
-def shutdown():
-    print ''
-    print bcolors.BGRED + bcolors.WHITE + t() \
-        + '[info] shutting down torghost' + bcolors.ENDC + '''
-
-'''
-    sys.exit()
-
-
 def sigint_handler(signum, frame):
-    print '\n user interrupt ! shutting down'
-    shutdown()
+    print 'User interrupt ! shutting down'
+    stop_torghost()
 
 
 def logo():
@@ -56,7 +47,7 @@ def logo():
        | |/ _ \| '__| |  _| '_ \ / _ \/ __| __|
        | | (_) | |  | |_| | | | | (_) \__ \ |_
        |_|\___/|_|   \____|_| |_|\___/|___/\__|
-	v3.0 - github.com/SusmithKrishnan/torghost
+	v3.0.1 - github.com/SusmithKrishnan/torghost
 
     """
     print bcolors.ENDC
@@ -65,7 +56,7 @@ def logo():
 def usage():
     logo()
     print """
-    Torghost v3.0 usage:
+    Torghost v3.0.1 usage:
     -s    --start       Start Torghost
     -r    --switch      Request new tor exit node
     -x    --stop        Stop Torghost
