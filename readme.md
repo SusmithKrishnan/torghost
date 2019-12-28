@@ -7,7 +7,7 @@ TorGhost can be installed by downloading the [latest release](https://github.com
 
 Download
 
-` wget -c https://github.com/SusmithKrishnan/torghost/releases/download/v3.0/torghost_3.0_amd64.deb`
+` wget -c https://github.com/SusmithKrishnan/torghost/releases/download/v3.0.2/torghost-3.0.2-amd64.deb`
 
 In the downloaded folder use dpkg to install
 
