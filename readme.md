@@ -11,7 +11,7 @@ Download
 
 In the downloaded folder use dpkg to install
 
-`sudo dpkg -i torghost_*_amd64.deb`
+`sudo dpkg -i torghost-*-amd64.deb`
 
 
 
