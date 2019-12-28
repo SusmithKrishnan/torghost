@@ -203,9 +203,9 @@ def check_update():
             os.system('cd /tmp && git clone  https://github.com/SusmithKrishnan/torghost')
             os.system('cd /tmp/torghost && sudo ./build.sh')
         elif choice in no:
-            print "Please respond with 'yes' or 'no'"
-        else:
             print t() +" Update abotred by user"
+        else:
+            print "Please respond with 'yes' or 'no'"
     else:
         print t() + " Torghost is up to date!"    
 
