@@ -1,30 +1,51 @@
-THIS TOOL IS FOR KALI LINUX AND BUILD ON PYTHON 2.7 (wont work on windows and python 3.x)
+## What is TorGhost ?
+TorGhost is an anonymization script. TorGhost redirects all internet traffic through SOCKS5 tor proxy. DNS requests are also redirected via tor, thus preventing DNSLeak. The scripts also disables unsafe packets exiting the system. Some packets like ping request can compromise your identity.
+
+
+## How to install ?
+TorGhost can be installed by downloading the [latest release](https://github.com/SusmithKrishnan/torghost/releases) using debian package manager
+
+Download
+
+` wget -c https://github.com/SusmithKrishnan/torghost/releases/download/v3.0/torghost_3.0_amd64.deb`
+
+In the downloaded folder use dpkg to install
+
+`sudo dpkg -i torghost_*_amd64.deb`
 
 
 
------------------INSTALL ----------------------------------------------------------------
+#### Alternate method (support for previous install script)
+The *install.sh* script also does the same. Its for users following old tutorials.
 
-clone to the repo or download the files, open the directory and follow the commands
-	
-	# chmod +x install.sh
-	# ./install.sh
+`git clone https://github.com/SusmithKrishnan/torghost.git`
 
+`cd torghost`
 
+`chmod +x install.sh`
 
------------------------------------------------------------------------------------------
-      _____           ____ _               _
-     |_   _|__  _ __ / ___| |__   ___  ___| |_
-       | |/ _ \| '__| |  _| '_ \ / _ \/ __| __|
-       | | (_) | |  | |_| | | | | (_) \__ \ |_
-       |_|\___/|_|   \____|_| |_|\___/|___/\__|
-	v2.0 - SusmithHCK | www.khromozome.com 
-        Hacker's QandA forum: https://www.askthehackers.com
+`./install sh`
 
 
-	USAGE:
-        torghost start -----(start torghost)
-        torghost stop  -----(stop torghost) 
-	torghost switch ----(switch IP)
+## Usage
+Torghost v3.0 usage:
 
-    
------------------------------------------------------------------------------------------
+  `-s      --start      Start Torghost`
+
+  `-r      --switch      Request new tor exit node`
+
+`  -x      --stop      Stop Torghost`
+
+`  -h      --help      Print this help and exit`
+
+
+## Build and install from source
+`git clone https://github.com/SusmithKrishnan/torghost.git`
+
+`cd torghost`
+
+`chmod +x build.sh`
+
+`./build sh`
+
+
