@@ -193,9 +193,21 @@ def check_update():
     print t() + ' Checking for update...'
     newversion= get(API_DOMAIN+'/latestversion').json()    
     if newversion['version'] != VERSION:
-        print t() +  bcolors.GREEN + ' New update available please check https://github.com/SusmithKrishnan/torghost' + bcolors.ENDC
+        print t() +  bcolors.GREEN + ' New update available' + bcolors.ENDC
+        
+        yes = {'yes','y', 'ye', ''}
+        no = {'no','n'}
+
+        choice = raw_input(bcolors.BOLD + "Would you like to download latest version and build from Git repo? [Y/n]" + bcolors.ENDC).lower()
+        if choice in yes:
+            os.system('cd /tmp && git clone  https://github.com/SusmithKrishnan/torghost')
+            os.system('cd /tmp/torghost && sudo ./build.sh')
+        elif choice in no:
+            print "Please respond with 'yes' or 'no'"
+        else:
+            print t() +" Update abotred by user"
     else:
-        print t() + ' Torghost is up to date...'    
+        print t() + " Torghost is up to date!"    
 
 
 def main():
