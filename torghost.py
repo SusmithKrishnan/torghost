@@ -35,7 +35,7 @@ def t():
 
 
 def sigint_handler(signum, frame):
-    print 'User interrupt ! shutting down'
+    print "User interrupt ! shutting down"
     stop_torghost()
 
 
