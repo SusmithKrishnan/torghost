@@ -70,7 +70,7 @@ def usage():
 def ip():
     while True:
         try:
-            ipadd = get(API_DOMAIN+'/ip').text
+            ipadd = get('https://ipinfo.io/ip').text
         except:
             continue
         break
