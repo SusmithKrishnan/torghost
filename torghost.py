@@ -97,6 +97,7 @@ resolv = '/etc/resolv.conf'
 
 def start_torghost():
     print t() + ' Always check for updates using -u option',
+    os.system('sudo cp /etc/resolv.conf /etc/resolv.conf.bak')
     if os.path.exists(Torrc) and TorrcCfgString in open(Torrc).read():
         print t() + ' Torrc file already configured'
     else:
@@ -157,6 +158,7 @@ def start_torghost():
 def stop_torghost():
     print bcolors.RED + t() + 'STOPPING torghost' + bcolors.ENDC
     print t() + ' Flushing iptables, resetting to default',
+    os.system('mv /etc/resolv.conf.bak /etc/resolv.conf')
     IpFlush = \
         """
 	iptables -P INPUT ACCEPT
