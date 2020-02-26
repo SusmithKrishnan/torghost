@@ -1,17 +1,27 @@
 ## What is TorGhost ?
 TorGhost is an anonymization script. TorGhost redirects all internet traffic through SOCKS5 tor proxy. DNS requests are also redirected via tor, thus preventing DNSLeak. The scripts also disables unsafe packets exiting the system. Some packets like ping request can compromise your identity.
 
+## Build and install from source
+`git clone https://github.com/SusmithKrishnan/torghost.git`
+
+`cd torghost`
+
+`chmod +x build.sh`
+
+`./build.sh`
 
 ## How to install ?
-TorGhost can be installed by downloading the [latest release](https://github.com/SusmithKrishnan/torghost/releases) using debian package manager
+**New kali update is causing permission error, please build and install from source
 
-Download
+~~TorGhost can be installed by downloading the [latest release](https://github.com/SusmithKrishnan/torghost/releases) using debian package manager
 
-` wget -c https://github.com/SusmithKrishnan/torghost/releases/download/v3.0.2/torghost-3.0.2-amd64.deb`
+~~Download
 
-In the downloaded folder use dpkg to install
+~~` wget -c https://github.com/SusmithKrishnan/torghost/releases/download/v3.0.2/torghost-3.0.2-amd64.deb`
 
-`sudo dpkg -i torghost-*-amd64.deb`
+~~In the downloaded folder use dpkg to install
+
+~~`sudo dpkg -i torghost-*-amd64.deb`
 
 
 
@@ -39,13 +49,6 @@ Torghost v3.0 usage:
 `  -h      --help      Print this help and exit`
 
 
-## Build and install from source
-`git clone https://github.com/SusmithKrishnan/torghost.git`
 
-`cd torghost`
-
-`chmod +x build.sh`
-
-`./build.sh`
 
 
