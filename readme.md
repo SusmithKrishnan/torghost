@@ -24,7 +24,7 @@ The *install.sh* script also does the same. Its for users following old tutorial
 
 `chmod +x install.sh`
 
-`./install sh`
+`./install.sh`
 
 
 ## Usage
@@ -46,6 +46,6 @@ Torghost v3.0 usage:
 
 `chmod +x build.sh`
 
-`./build sh`
+`./build.sh`
 
 

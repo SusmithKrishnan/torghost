@@ -70,7 +70,7 @@ def usage():
 def ip():
     while True:
         try:
-            ipadd = get(API_DOMAIN+'/ip').text
+            ipadd = get('https://ipinfo.io/ip').text
         except:
             continue
         break
@@ -100,7 +100,11 @@ resolv = '/etc/resolv.conf'
 
 
 def start_torghost():
+<<<<<<< HEAD
     print t() + ' Always check for updates using -u option'
+=======
+    print t() + ' Always check for updates using -u option',
+>>>>>>> master
     os.system('sudo cp /etc/resolv.conf /etc/resolv.conf.bak')
     if os.path.exists(Torrc) and TorrcCfgString in open(Torrc).read():
         print t() + ' Torrc file already configured'
