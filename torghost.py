@@ -11,7 +11,7 @@ import signal
 from stem import Signal
 from stem.control import Controller
 
-VERSION = "3.0.2"
+VERSION = "3.0.3"
 API_DOMAIN = "https://fathomless-tor-66488.herokuapp.com"
 
 
@@ -47,7 +47,7 @@ def logo():
        | |/ _ \| '__| |  _| '_ \ / _ \/ __| __|
        | | (_) | |  | |_| | | | | (_) \__ \ |_
        |_|\___/|_|   \____|_| |_|\___/|___/\__|
-	v3.0.2 - github.com/SusmithKrishnan/torghost
+	v3.0.3 - github.com/SusmithKrishnan/torghost
 
     """
     print bcolors.ENDC
@@ -76,6 +76,10 @@ def ip():
         break
     return ipadd
 
+def check_root():
+	if os.geteuid()!=0:
+ 		print "You must be root; Say the magic word 'sudo'"
+ 		sys.exit(0)
 
 signal.signal(signal.SIGINT, sigint_handler)
 
@@ -96,7 +100,11 @@ resolv = '/etc/resolv.conf'
 
 
 def start_torghost():
+<<<<<<< HEAD
+    print t() + ' Always check for updates using -u option'
+=======
     print t() + ' Always check for updates using -u option',
+>>>>>>> master
     os.system('sudo cp /etc/resolv.conf /etc/resolv.conf.bak')
     if os.path.exists(Torrc) and TorrcCfgString in open(Torrc).read():
         print t() + ' Torrc file already configured'
@@ -213,6 +221,7 @@ def check_update():
 
 
 def main():
+    check_root()
     if len(sys.argv) <= 1 :
         check_update()
         usage()
