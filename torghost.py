@@ -10,7 +10,6 @@ import time
 import signal
 from stem import Signal
 from stem.control import Controller
-import re
 
 VERSION = "3.1.0"
 
@@ -51,7 +50,7 @@ def logo():
        | |/ _ \| '__| |  _| '_ \ / _ \/ __| __|
        | | (_) | |  | |_| | | | | (_) \__ \ |_
        |_|\___/|_|   \____|_| |_|\___/|___/\__|
-	v3.0.3 - github.com/SusmithKrishnan/torghost
+	v3.1.0 - github.com/SusmithKrishnan/torghost
 
     """
     print bcolors.ENDC
@@ -221,7 +220,7 @@ def check_update():
                 'cd /tmp && git clone  https://github.com/SusmithKrishnan/torghost')
             os.system('cd /tmp/torghost && sudo ./build.sh')
         elif choice in no:
-            print t() + " Update abotred by user"
+            print t() + " Update aborted by user"
         else:
             print "Please respond with 'yes' or 'no'"
     else:
