@@ -11,8 +11,11 @@ import signal
 from stem import Signal
 from stem.control import Controller
 
-VERSION = "3.0.3"
-API_DOMAIN = "https://fathomless-tor-66488.herokuapp.com"
+VERSION = "3.1.0"
+
+IP_API = "https://api.ipify.org/?format=json"
+
+LATEST_RELEASE_API = "https://api.github.com/repos/SusmithKrishnan/torghost/releases/latest"
 
 
 class bcolors:
@@ -47,7 +50,7 @@ def logo():
        | |/ _ \| '__| |  _| '_ \ / _ \/ __| __|
        | | (_) | |  | |_| | | | | (_) \__ \ |_
        |_|\___/|_|   \____|_| |_|\___/|___/\__|
-	v3.0.3 - github.com/SusmithKrishnan/torghost
+	v3.1.0 - github.com/SusmithKrishnan/torghost
 
     """
     print bcolors.ENDC
@@ -70,16 +73,19 @@ def usage():
 def ip():
     while True:
         try:
-            ipadd = get(API_DOMAIN+'/ip').text
+            jsonRes = get(IP_API).json()
+            ipTxt = jsonRes["ip"]
         except:
             continue
         break
-    return ipadd
+    return ipTxt
+
 
 def check_root():
-	if os.geteuid()!=0:
- 		print "You must be root; Say the magic word 'sudo'"
- 		sys.exit(0)
+    if os.geteuid() != 0:
+        print "You must be root; Say the magic word 'sudo'"
+        sys.exit(0)
+
 
 signal.signal(signal.SIGINT, sigint_handler)
 
@@ -195,34 +201,40 @@ def switch_tor():
     print t() + ' Fetching current IP...'
     print t() + ' CURRENT IP : ' + bcolors.GREEN + ip() + bcolors.ENDC
 
+
 def check_update():
     print t() + ' Checking for update...'
-    newversion= get(API_DOMAIN+'/latestversion').json()    
-    if newversion['version'] != VERSION:
-        print t() +  bcolors.GREEN + ' New update available' + bcolors.ENDC
-        
-        yes = {'yes','y', 'ye', ''}
-        no = {'no','n'}
+    jsonRes = get(LATEST_RELEASE_API).json()
+    newversion = jsonRes["tag_name"][1:]
+    if newversion != VERSION:
+        print t() + bcolors.GREEN + ' New update available!' + bcolors.ENDC
+        print t() + ' Your current TorGhost version : ' + bcolors.GREEN + VERSION + bcolors.ENDC
+        print t() + ' Latest TorGhost version available : ' + bcolors.GREEN + newversion + bcolors.ENDC
+        yes = {'yes', 'y', 'ye', ''}
+        no = {'no', 'n'}
 
-        choice = raw_input(bcolors.BOLD + "Would you like to download latest version and build from Git repo? [Y/n]" + bcolors.ENDC).lower()
+        choice = raw_input(
+            bcolors.BOLD + "Would you like to download latest version and build from Git repo? [Y/n]" + bcolors.ENDC).lower()
         if choice in yes:
-            os.system('cd /tmp && git clone  https://github.com/SusmithKrishnan/torghost')
+            os.system(
+                'cd /tmp && git clone  https://github.com/SusmithKrishnan/torghost')
             os.system('cd /tmp/torghost && sudo ./build.sh')
         elif choice in no:
-            print t() +" Update abotred by user"
+            print t() + " Update aborted by user"
         else:
             print "Please respond with 'yes' or 'no'"
     else:
-        print t() + " Torghost is up to date!"    
+        print t() + " Torghost is up to date!"
 
 
 def main():
     check_root()
-    if len(sys.argv) <= 1 :
+    if len(sys.argv) <= 1:
         check_update()
         usage()
     try:
-        (opts, args) = getopt.getopt(sys.argv[1:], 'srxhu', ['start', 'stop', 'switch', 'help', 'update'])
+        (opts, args) = getopt.getopt(sys.argv[1:], 'srxhu', [
+            'start', 'stop', 'switch', 'help', 'update'])
     except getopt.GetoptError, err:
         usage()
         sys.exit(2)
@@ -236,7 +248,7 @@ def main():
         elif o in ('-r', '--switch'):
             switch_tor()
         elif o in ('-u', '--update'):
-            check_update()   
+            check_update()
         else:
             usage()
 
