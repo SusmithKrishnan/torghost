@@ -213,7 +213,7 @@ def check_update():
         yes = {'yes', 'y', 'ye', ''}
         no = {'no', 'n'}
 
-        choice = raw_input(
+        choice = input(
             bcolors.BOLD + "Would you like to download latest version and build from Git repo? [Y/n]" + bcolors.ENDC).lower()
         if choice in yes:
             os.system(
