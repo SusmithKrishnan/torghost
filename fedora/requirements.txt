@@ -1,3 +1,0 @@
-stem==1.7.1
-PyInstaller>=3.6
-requests==2.22.0
