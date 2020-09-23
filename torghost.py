@@ -10,8 +10,9 @@ import time
 import signal
 from stem import Signal
 from stem.control import Controller
+from packaging import version
 
-VERSION = "3.1.0"
+VERSION = "3.1.1"
 
 IP_API = "https://api.ipify.org/?format=json"
 
@@ -50,9 +51,9 @@ def logo():
        | |/ _ \| '__| |  _| '_ \ / _ \/ __| __|
        | | (_) | |  | |_| | | | | (_) \__ \ |_
        |_|\___/|_|   \____|_| |_|\___/|___/\__|
-	v3.1.0 - github.com/SusmithKrishnan/torghost
+	{V} - github.com/SusmithKrishnan/torghost
 
-    """)
+    """.format(V=VERSION))
     print(bcolors.ENDC)
 
 
@@ -120,19 +121,19 @@ def start_torghost():
         print(t() + ' DNS resolv.conf file already configured')
     else:
         with open(resolv, 'w') as myfile:
-            print(t() + ' Configuring DNS resolv.conf file.. ',)
+            print(t() + ' Configuring DNS resolv.conf file.. '),
             myfile.write(resolvString)
             print(bcolors.GREEN + '[done]' + bcolors.ENDC)
 
-    print(t() + ' Stopping tor service ',)
+    print(t() + ' Stopping tor service '),
     os.system('sudo systemctl stop tor')
     os.system('sudo fuser -k 9051/tcp > /dev/null 2>&1')
     print(bcolors.GREEN + '[done]' + bcolors.ENDC)
-    print(t() + ' Starting new tor daemon ',)
+    print(t() + ' Starting new tor daemon '),
     os.system('sudo -u debian-tor tor -f /etc/tor/torghostrc > /dev/null'
               )
     print(bcolors.GREEN + '[done]' + bcolors.ENDC)
-    print(t() + ' setting up iptables rules',)
+    print(t() + ' setting up iptables rules'),
 
     iptables_rules = \
         """
@@ -167,7 +168,7 @@ def start_torghost():
 
 def stop_torghost():
     print(bcolors.RED + t() + 'STOPPING torghost' + bcolors.ENDC)
-    print(t() + ' Flushing iptables, resetting to default',)
+    print(t() + ' Flushing iptables, resetting to default'),
     os.system('mv /etc/resolv.conf.bak /etc/resolv.conf')
     IpFlush = \
         """
@@ -182,7 +183,7 @@ def stop_torghost():
     os.system(IpFlush)
     os.system('sudo fuser -k 9051/tcp > /dev/null 2>&1')
     print(bcolors.GREEN + '[done]' + bcolors.ENDC)
-    print(t() + ' Restarting Network manager',)
+    print(t() + ' Restarting Network manager'),
     os.system('service network-manager restart')
     print(bcolors.GREEN + '[done]' + bcolors.ENDC)
     print(t() + ' Fetching current IP...')
@@ -193,7 +194,7 @@ def stop_torghost():
 def switch_tor():
     print(t() + ' Please wait...')
     time.sleep(7)
-    print(t() + ' Requesting new circuit...',)
+    print(t() + ' Requesting new circuit...'),
     with Controller.from_port(port=9051) as controller:
         controller.authenticate()
         controller.signal(Signal.NEWNYM)
@@ -206,7 +207,8 @@ def check_update():
     print(t() + ' Checking for update...')
     jsonRes = get(LATEST_RELEASE_API).json()
     newversion = jsonRes["tag_name"][1:]
-    if newversion != VERSION:
+    print(newversion)
+    if version.parse(newversion) > version.parse(VERSION):
         print(t() + bcolors.GREEN + ' New update available!' + bcolors.ENDC)
         print(t() + ' Your current TorGhost version : ' + bcolors.GREEN + VERSION + bcolors.ENDC)
         print(t() + ' Latest TorGhost version available : ' + bcolors.GREEN + newversion + bcolors.ENDC)
@@ -235,7 +237,7 @@ def main():
     try:
         (opts, args) = getopt.getopt(sys.argv[1:], 'srxhu', [
             'start', 'stop', 'switch', 'help', 'update'])
-    except (getopt.GetoptError, err):
+    except (getopt.GetoptError):
         usage()
         sys.exit(2)
     for (o, a) in opts:
