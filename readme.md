@@ -40,13 +40,15 @@ The *install.sh* script also does the same. Its for users following old tutorial
 ## Usage
 Torghost v3.0 usage:
 
-  `-s      --start      Start Torghost`
+`  -s      --start        Start Torghost`
 
-  `-r      --switch      Request new tor exit node`
+`  -r      --switch       Request new tor exit node`
 
-`  -x      --stop      Stop Torghost`
+`  -x      --stop         Stop Torghost`
 
-`  -h      --help      Print this help and exit`
+`  -h      --help         Print this help and exit`
+
+`  -u      --update       Checks for updates`
 
 
 
